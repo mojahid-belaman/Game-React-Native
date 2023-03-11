@@ -1,8 +1,15 @@
-import { ImageBackground, StyleSheet } from "react-native";
+import {
+  ImageBackground,
+  Platform,
+  SafeAreaView,
+  StatusBar,
+  StyleSheet,
+} from "react-native";
 import StartGameScreen from "./screens/StartGameScreen";
 import { LinearGradient } from "expo-linear-gradient";
 import { useState } from "react";
 import GameScreen from "./screens/GameScreen";
+import Colors from "./constants/colors";
 
 export default function App() {
   const [pickNumber, setPickNumber] = useState();
@@ -17,14 +24,23 @@ export default function App() {
     screen = <GameScreen />;
   }
   return (
-    <LinearGradient colors={["#ba68c8", "#4a148c"]} style={styles.rootScreen}>
+    <LinearGradient
+      colors={[Colors.purple300, Colors.purple900]}
+      style={styles.rootScreen}
+    >
       <ImageBackground
         source={require("./assets/images/dice.jpg")}
         resizeMode={"cover"}
         style={styles.rootScreen}
         imageStyle={styles.backgroundImage}
       >
-        {screen}
+        <SafeAreaView
+          style={{
+            paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
+          }}
+        >
+          {screen}
+        </SafeAreaView>
       </ImageBackground>
     </LinearGradient>
   );
