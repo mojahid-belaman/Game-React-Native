@@ -1,20 +1,45 @@
-import { StyleSheet, TextInput, View } from "react-native";
+import { useState } from "react";
+import { Alert, StyleSheet, TextInput, View } from "react-native";
 import PrimaryButton from "../components/atoms/PrimaryButton";
 
-const StartGameScreen = () => {
+const StartGameScreen = ({onScreenHandler}) => {
+  const [enteredNumber, setEnteredNumber] = useState("");
+
+  function inputNumberHandler(enteredText) {
+    setEnteredNumber(enteredText);
+  }
+
+  function resetInput() {
+    setEnteredNumber("");
+  }
+
+  function confirmData() {
+    const regex = new RegExp("^([1-9]|[1-9][0-9])$");
+    if (!regex.test(enteredNumber)) {
+      Alert.alert(
+        "Invalid Number",
+        "The Number has to be a number between 1 and 99.",
+        [{ text: "Ok", style: "destructive", onPress: resetInput }]
+      );
+    }
+    onScreenHandler(enteredNumber)
+  }
+
   return (
     <View style={styles.boxContainer}>
       <TextInput
         style={styles.inputContainer}
         maxLength={2}
         keyboardType="numeric"
+        value={enteredNumber}
+        onChangeText={inputNumberHandler}
       />
       <View style={styles.boxButton}>
         <View style={styles.btnContainer}>
-          <PrimaryButton onPress={() => {}}>Reset</PrimaryButton>
+          <PrimaryButton onPress={resetInput}>Reset</PrimaryButton>
         </View>
         <View style={styles.btnContainer}>
-          <PrimaryButton>Confirm</PrimaryButton>
+          <PrimaryButton onPress={confirmData}>Confirm</PrimaryButton>
         </View>
       </View>
     </View>
@@ -49,6 +74,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
   },
   btnContainer: {
-    flex: 1
-  }
+    flex: 1,
+  },
 });
