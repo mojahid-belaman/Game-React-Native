@@ -15,19 +15,31 @@ import GameOverScreen from "./screens/GameOverScreen";
 export default function App() {
   const [pickNumber, setPickNumber] = useState();
   const [gameOver, setGameOver] = useState(true);
+  const [roundNumber, setRoundNumber] = useState(0);
 
   function pickNumberHandler(pickNumber) {
     setPickNumber(pickNumber);
     setGameOver(false);
   }
 
+  function newStartGame() {
+    setRoundNumber(0);
+    setPickNumber(null);
+  }
+
   let screen = <StartGameScreen onScreenHandler={pickNumberHandler} />;
 
   if (pickNumber) {
-    screen = <GameScreen inputNumber={pickNumber} onGameOver={setGameOver} />;
+    screen = <GameScreen inputNumber={pickNumber} onGameOver={setGameOver} onRoundNumbe={setRoundNumber} />;
   }
   if (gameOver && pickNumber) {
-    screen = <GameOverScreen />;
+    screen = (
+      <GameOverScreen
+        roundNumber={roundNumber}
+        pickNumber={pickNumber}
+        onNewStartGame={newStartGame}
+      />
+    );
   }
   return (
     <LinearGradient
