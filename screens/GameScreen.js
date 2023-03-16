@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
 import { Alert } from "react-native";
-import { Text, View, StyleSheet } from "react-native";
+import { Text, View, FlatList, StyleSheet } from "react-native";
 import GuessNumber from "../components/atoms/GuessNumber";
 import InstructionText from "../components/atoms/InstructionText";
 import PrimaryButton from "../components/atoms/PrimaryButton";
+import SvgAdd from "../components/atoms/SvgAdd";
+import SvgMinus from "../components/atoms/SvgMinus";
 import Title from "../components/atoms/Title";
 import Card from "../components/organism/Card";
 
@@ -17,15 +19,21 @@ function generateNumberRandom(min, max, exclud) {
   else return randomNumber;
 }
 
-const GameScreen = ({ inputNumber, onGameOver }) => {
+const GameScreen = ({ inputNumber, onGameOver, onRoundNumbe }) => {
   const initialGuessNumber = generateNumberRandom(1, 100, inputNumber);
   const [guessNumber, setGuessNumber] = useState(initialGuessNumber);
+  const [guessRound, setGuessRound] = useState([initialGuessNumber]);
 
   useEffect(() => {
     if (guessNumber == inputNumber) {
       onGameOver(true);
     }
   }, [guessNumber, inputNumber, onGameOver]);
+
+  useEffect(() => {
+    minBoundry = 1;
+    maxBoundry = 100;
+  }, []);
 
   function nextGuessNumber(direction) {
     console.log(minBoundry, maxBoundry);
@@ -48,27 +56,41 @@ const GameScreen = ({ inputNumber, onGameOver }) => {
       maxBoundry,
       guessNumber
     );
+    onRoundNumbe((prev) => prev + 1);
     setGuessNumber(redefineNumber);
+    setGuessRound((prevGuess) => [redefineNumber, ...prevGuess]);
   }
   return (
     <View style={styles.screen}>
       <Title>Opponent's Guess</Title>
       <GuessNumber>{guessNumber}</GuessNumber>
       <Card>
-        <InstructionText>Higher or Lower ?</InstructionText>
+        <InstructionText style={styles.instructionText}>
+          Higher or Lower ?
+        </InstructionText>
         <View style={styles.btnContainer}>
           <View style={styles.btnSubContainer}>
             <PrimaryButton onPress={nextGuessNumber.bind(this, "lower")}>
-              -
+              <SvgMinus fill={"#FFFFFF"} />
             </PrimaryButton>
           </View>
           <View style={styles.btnSubContainer}>
             <PrimaryButton onPress={nextGuessNumber.bind(this, "higher")}>
-              +
+              <SvgAdd fill={"#FFFFFF"} />
             </PrimaryButton>
           </View>
         </View>
       </Card>
+      <View>
+        {/* {guessRound.map((item) => (
+          <Text>{item}</Text>
+        ))} */}
+        <FlatList
+          data={guessRound}
+          renderItem={(round) => <Text>{round.item}</Text>}
+          keyExtractor={round => round.index}
+        />
+      </View>
     </View>
   );
 };
@@ -78,6 +100,9 @@ export default GameScreen;
 const styles = StyleSheet.create({
   screen: {
     padding: 24,
+  },
+  instructionText: {
+    marginBottom: 20,
   },
   btnContainer: {
     flexDirection: "row",
