@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
 import { Alert } from "react-native";
-import { Text, View, FlatList, StyleSheet } from "react-native";
+import { View, FlatList, StyleSheet } from "react-native";
 import GuessNumber from "../components/atoms/GuessNumber";
 import InstructionText from "../components/atoms/InstructionText";
 import PrimaryButton from "../components/atoms/PrimaryButton";
 import SvgAdd from "../components/atoms/SvgAdd";
 import SvgMinus from "../components/atoms/SvgMinus";
 import Title from "../components/atoms/Title";
+import GuessLogItems from "../components/molecules/guessLogItems";
 import Card from "../components/organism/Card";
 
 let maxBoundry = 100;
@@ -36,7 +37,6 @@ const GameScreen = ({ inputNumber, onGameOver, onRoundNumbe }) => {
   }, []);
 
   function nextGuessNumber(direction) {
-    console.log(minBoundry, maxBoundry);
     if (
       (direction === "lower" && guessNumber < inputNumber) ||
       (direction === "higher" && guessNumber > inputNumber)
@@ -81,14 +81,16 @@ const GameScreen = ({ inputNumber, onGameOver, onRoundNumbe }) => {
           </View>
         </View>
       </Card>
-      <View>
-        {/* {guessRound.map((item) => (
-          <Text>{item}</Text>
-        ))} */}
+      <View style={styles.itemsContainer}>
         <FlatList
           data={guessRound}
-          renderItem={(round) => <Text>{round.item}</Text>}
-          keyExtractor={round => round.index}
+          renderItem={(round) => (
+            <GuessLogItems
+              guessNmber={round.item}
+              roundNumber={guessRound.length - round.index}
+            />
+          )}
+          keyExtractor={(item) => item}
         />
       </View>
     </View>
@@ -99,6 +101,7 @@ export default GameScreen;
 
 const styles = StyleSheet.create({
   screen: {
+    flex: 1,
     padding: 24,
   },
   instructionText: {
@@ -109,5 +112,9 @@ const styles = StyleSheet.create({
   },
   btnSubContainer: {
     flex: 1,
+  },
+  itemsContainer: {
+    flex: 1,
+    padding: 15,
   },
 });
