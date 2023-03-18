@@ -14,7 +14,7 @@ export default GuessNumber;
 const styles = StyleSheet.create({
   boxContainer: {
     padding: 20,
-    margin: 30,
+    marginVertical: 15,
     borderWidth: 2,
     backgroundColor: colors.purple900,
     borderColor: colors.purple100,
