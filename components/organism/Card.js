@@ -11,7 +11,6 @@ const styles = StyleSheet.create({
   card: {
     justifyContent: "center",
     alignItems: "center",
-    marginTop: 26,
     marginHorizontal: 20,
     padding: 20,
     backgroundColor: Colors.purple900,
