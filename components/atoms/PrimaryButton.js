@@ -23,7 +23,7 @@ export default PrimaryButton;
 
 const styles = StyleSheet.create({
   btnOuterContainer: {
-    borderRadius: 30,
+    borderRadius: 20,
     margin: 5,
     overflow: "hidden",
   },
@@ -34,6 +34,8 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   btnText: {
+    paddingHorizontal: 15,
+    paddingVertical: 5,
     color: Colors.white,
     textAlign: "center",
   },
