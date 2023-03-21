@@ -1,14 +1,32 @@
-import { Image, StyleSheet, Text, View, Dimensions } from "react-native";
+import {
+  Image,
+  StyleSheet,
+  Text,
+  View,
+  useWindowDimensions,
+} from "react-native";
 import PrimaryButton from "../components/atoms/PrimaryButton";
 import Title from "../components/atoms/Title";
 import colors from "../constants/colors";
 
 const GameOverScreen = ({ roundNumber, pickNumber, onNewStartGame }) => {
+  const { width, height } = useWindowDimensions();
+  let imageSize = 250;
+  if (width < 380)
+    imageSize = 150;
+  if (height < 400)
+    imageSize = 120
+
+  const imageStyle = {
+    width: imageSize,
+    height: imageSize,
+    borderRadius: imageSize / 2
+  }
   return (
     <View style={styles.rootContainer}>
       <Title>Game Is Over</Title>
-      <View style={styles.imageContainer}>
-        <Image source={require("../assets/images/gameOver.jpg")} />
+      <View style={[styles.imageContainer, imageStyle]}>
+        <Image source={require("../assets/images/gameOver.jpg")} style={styles.image} />
       </View>
       <Text style={styles.textContainer}>
         Your Phone needed <Text style={styles.highligh}>{roundNumber}</Text>{" "}
@@ -22,8 +40,6 @@ const GameOverScreen = ({ roundNumber, pickNumber, onNewStartGame }) => {
 
 export default GameOverScreen;
 
-const {width} = Dimensions.get('window');
-
 const styles = StyleSheet.create({
   rootContainer: {
     flex: 1,
@@ -31,9 +47,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   imageContainer: {
-    width: width < 380 ? 150 : 250,
-    height: width < 380 ? 150 : 250,
-    borderRadius: width < 380 ? 75 : 125,
     borderColor: colors.white,
     borderWidth: 4,
     margin: 30,
