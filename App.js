@@ -30,7 +30,13 @@ export default function App() {
   let screen = <StartGameScreen onScreenHandler={pickNumberHandler} />;
 
   if (pickNumber) {
-    screen = <GameScreen inputNumber={pickNumber} onGameOver={setGameOver} onRoundNumbe={setRoundNumber} />;
+    screen = (
+      <GameScreen
+        inputNumber={pickNumber}
+        onGameOver={setGameOver}
+        onRoundNumbe={setRoundNumber}
+      />
+    );
   }
   if (gameOver && pickNumber) {
     screen = (
@@ -42,26 +48,30 @@ export default function App() {
     );
   }
   return (
-    <LinearGradient
-      colors={[Colors.purple300, Colors.purple900]}
-      style={styles.rootScreen}
-    >
-      <ImageBackground
-        source={require("./assets/images/dice.jpg")}
-        resizeMode={"cover"}
+    <>
+      <StatusBar barStyle={"default"} />
+      <LinearGradient
+        colors={[Colors.purple300, Colors.purple900]}
         style={styles.rootScreen}
-        imageStyle={styles.backgroundImage}
       >
-        <SafeAreaView
-          style={{
-            paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
-            height: "100%",
-          }}
+        <ImageBackground
+          source={require("./assets/images/dice.jpg")}
+          resizeMode={"cover"}
+          style={styles.rootScreen}
+          imageStyle={styles.backgroundImage}
         >
-          {screen}
-        </SafeAreaView>
-      </ImageBackground>
-    </LinearGradient>
+          <SafeAreaView
+            style={{
+              paddingTop:
+                Platform.OS === "android" ? StatusBar.currentHeight : 0,
+              height: "100%",
+            }}
+          >
+            {screen}
+          </SafeAreaView>
+        </ImageBackground>
+      </LinearGradient>
+    </>
   );
 }
 
